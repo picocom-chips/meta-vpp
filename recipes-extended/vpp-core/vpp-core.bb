@@ -13,7 +13,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
 AUTOTOOLS_SCRIPT_PATH = "${S}/src"
 
 
-SRC_URI = "git://github.com/FDio/vpp;branch=${STABLE} \
+SRC_URI = "git://github.com/FDio/vpp;protocol=https;branch=${STABLE} \
 	file://0001-Link-vpp-api-with-shared-libs-if-static-is-disabled.patch \
 	file://0001-GCC-above-5.4-fails-when-we-specify-arch-funattribut.patch \
 	"
@@ -21,7 +21,7 @@ DEPENDS = "dpdk openssl numactl"
 
 inherit autotools
 inherit pkgconfig
-inherit python-dir
+inherit python3-dir
 
 
 EXTRA_OECONF = " \
@@ -37,11 +37,11 @@ EXTRA_OECONF = " \
 include vpp-pkgs.inc
 
 
-do_configure_append () {
+do_configure:append () {
 	( cd ${B} &&  mkdir -p vppinfra vpp/app )
 }
 
-do_install_append() {
+do_install:append() {
 	mkdir -p ${D}/etc/vpp
 	cp ${S}/src/vpp/conf/startup.conf ${D}/etc/vpp/startup.conf
 }
